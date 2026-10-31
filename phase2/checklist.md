@@ -1,6 +1,9 @@
 # Phase 2 Status: CIFAR-10 Architecture Comparison
 
-This report maps the Phase 2 requirements in the course project brief to the current implementation and work completed so far. It is intended as a progress summary for the project group; the instructor determines final credit.
+The code that matters is in train.py, and you do not need to pull this repo coz we should run the code on GoogleColab (or Kaggle) with GPU accelerator, not local machine (doable but not really ideal). I have shared the jupyter notebook with u with this link: https://colab.research.google.com/drive/1Li54zkXyOrNYRuT5cb0usxn1CCFf0Qhr. 
+The actual training is done in this notebook, and details about the training steps and logs and everything can be found in train.py and README.md.
+
+Here's what we have implemented so far and what's remaining:
 
 ## Requirement Status
 
@@ -26,10 +29,9 @@ PyTorch was confirmed to detect a Tesla T4 in Colab (`torch.cuda.is_available()`
 
 ## Remaining Actions
 
-1. Launch `demo.py` using a trained checkpoint and verify an image upload returns predictions.
-2. Download the `cnn_sanity` run folder from Colab before its runtime ends.
-3. Upload the project code and sanity-run logs to eNauczanie as required by the course brief.
-4. Push the latest source and documentation changes to the Git remote.
+1. please run everything and see if it works for you; if yes then we can upload the files to enauczanie and phase2 is basically done.
+2. demo in gradio also works for me but i only test one image of a bird from cifar10, the screenshot is in the repo folder.
+3. not sure if theres anything left; feel free to make any changes u think necessary :)
 
 ## Git and Colab Files
 

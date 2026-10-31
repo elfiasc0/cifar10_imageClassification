@@ -35,7 +35,7 @@ def main():
 
     gr.Interface(predict, gr.Image(type="pil"), gr.Label(num_top_classes=3),
                  title="CIFAR-10 image classifier",
-                 description="Upload a 32×32-style object image. The model predicts one of CIFAR-10's 10 classes.").launch()
+                 description="Upload a 32×32-style object image. The model predicts one of CIFAR-10's 10 classes.").launch(share=True)
 
 
 if __name__ == "__main__":
