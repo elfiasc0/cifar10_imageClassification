@@ -1,5 +1,6 @@
 torch
 torchvision
+datasets[vision]
 tensorboard
 gradio
 Pillow

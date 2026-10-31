@@ -8,14 +8,30 @@ from pathlib import Path
 
 import torch
 from torch import nn
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, Dataset, Subset, random_split
 from torch.utils.tensorboard import SummaryWriter
-from torchvision import datasets, transforms
+from datasets import load_dataset
+from torchvision import transforms
 
 
 CLASSES = ("airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck")
 MEAN = (0.4914, 0.4822, 0.4465)
 STD = (0.2470, 0.2435, 0.2616)
+
+
+class HFCIFAR10(Dataset):
+    """Adapt the Hugging Face CIFAR-10 split to torchvision transforms."""
+    def __init__(self, split, transform):
+        self.split = split
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.split)
+
+    def __getitem__(self, index):
+        row = self.split[index]
+        image = row["img"].convert("RGB")
+        return self.transform(image), int(row["label"])
 
 
 class MLP(nn.Module):
@@ -95,12 +111,15 @@ def main():
         transforms.ToTensor(), transforms.Normalize(MEAN, STD),
     ])
     eval_transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(MEAN, STD)])
-    train_aug = datasets.CIFAR10(args.data_dir, train=True, download=True, transform=train_transform)
-    train_eval = datasets.CIFAR10(args.data_dir, train=True, download=True, transform=eval_transform)
+    dataset = load_dataset("uoft-cs/cifar10", cache_dir=args.data_dir)
+    hf_train = dataset["train"]
+    train_aug = HFCIFAR10(hf_train, train_transform)
+    train_eval = HFCIFAR10(hf_train, eval_transform)
     generator = torch.Generator().manual_seed(args.seed)
-    train_subset, val_subset = random_split(train_aug, [45000, 5000], generator=generator)
-    # Validation must not use training augmentation. Reuse the exact split indices.
-    val_subset.dataset = train_eval
+    train_indices, val_indices = random_split(range(len(hf_train)), [45000, 5000], generator=generator)
+    train_subset = Subset(train_aug, train_indices.indices)
+    # Validation uses the same fixed indices without random training augmentation.
+    val_subset = Subset(train_eval, val_indices.indices)
     train_loader = DataLoader(train_subset, batch_size=args.batch_size, shuffle=True, num_workers=2)
     val_loader = DataLoader(val_subset, batch_size=args.batch_size, shuffle=False, num_workers=2)
     model = make_model(args.model).to(device)

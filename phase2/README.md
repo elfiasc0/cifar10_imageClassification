@@ -1,6 +1,6 @@
 # Phase 2: CIFAR-10 architecture comparison
 
-This starter implements three comparable classifiers (`mlp`, `cnn`, and `resnet18`), a fixed 45,000/5,000 train/validation split from the official training set, TensorBoard and CSV logs, best-validation checkpoint saving, a repeat-one-batch sanity run, and a Gradio image demo. The official 10,000-image test set is intentionally not used in Phase 2; reserve it for the final comparison in Phase 3.
+This starter loads CIFAR-10 from the Hugging Face dataset `uoft-cs/cifar10` and implements three comparable classifiers (`mlp`, `cnn`, and `resnet18`). It uses a fixed 45,000/5,000 train/validation split from the official training set, TensorBoard and CSV logs, best-validation checkpoint saving, a repeat-one-batch sanity run, and a Gradio image demo. The official 10,000-image test set is intentionally not used in Phase 2; reserve it for the final comparison in Phase 3.
 
 ## Recommended environment
 
@@ -25,4 +25,4 @@ tensorboard --logdir runs
 python demo.py runs/cnn_YYYYMMDD-HHMMSS/best.pt
 ```
 
-Each run writes `config.json`, `metrics.csv`, TensorBoard event files, and a checkpoint under `runs/`. In Colab, install requirements in a cell, then run these commands with `!python ...`; download or copy `runs/` before the runtime ends. Do not commit datasets, virtual environments, or large checkpoints; store the code and selected logs/checkpoints separately for submission.
+Each run writes `config.json`, `metrics.csv`, TensorBoard event files, and a checkpoint under `runs/`. Hugging Face downloads and caches the dataset under `data/`. In Colab, install requirements in a cell, then run these commands with `!python ...`; download or copy `runs/` before the runtime ends. Do not commit datasets, virtual environments, or large checkpoints; store the code and selected logs/checkpoints separately for submission.
