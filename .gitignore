@@ -1,0 +1,12 @@
+# Python environments and cache
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Downloaded data and experiment outputs
+phase2/data/
+phase2/runs/
+phase2/*.pt
+phase2/events.out.tfevents.*
