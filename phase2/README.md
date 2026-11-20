@@ -2,6 +2,17 @@
 
 This project compares three image classifiers on CIFAR-10: a multilayer perceptron (MLP), a small convolutional neural network (CNN), and ResNet18. CIFAR-10 is loaded from Hugging Face's [`uoft-cs/cifar10`](https://huggingface.co/datasets/uoft-cs/cifar10) dataset. The official 50,000-image training split is divided into 45,000 training images and 5,000 validation images. The official 10,000-image test split is reserved for the final Phase 3 comparison.
 
+## Phase 2 Requirement Status
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| Base model and training code | Implemented | `train.py` supports MLP, CNN, and ResNet18 classifiers, trained with cross-entropy loss and Adam. It loads CIFAR-10 from Hugging Face and uses a fixed 45,000/5,000 training/validation split. |
+| Logging support | Implemented | Runs write per-epoch or per-step metrics to `metrics.csv` and TensorBoard event files. |
+| Saving/checkpointing | Implemented | Normal training saves `best.pt` when validation accuracy improves. Sanity mode saves `checkpoint.pt`. |
+| Hyperparameter selection logging | Implemented | Each run writes `config.json` with the model, learning rate, batch size, epoch count, seed, and other settings. |
+| Sanity check and logs | Run successfully | A CNN sanity run repeatedly trained on one batch. Loss fell from 2.3033 to 0.0006; accuracy on that repeated batch reached 100%. This is the expected overfit check. |
+| Demo application | Implemented | `demo.py` accepts an uploaded image and displays the top three class predictions. |
+
 ## Environment Setup
 
 Google Colab with a GPU is recommended for the first training runs. Kaggle Notebooks is also suitable. A local machine works for development: the script automatically selects NVIDIA CUDA, Apple MPS, or CPU, in that order. The TensorFlow `cudart_stub` warning sometimes printed in Colab is separate from this PyTorch script; check PyTorch's GPU access with `torch.cuda.is_available()`.
@@ -71,3 +82,4 @@ Open TensorBoard with `tensorboard --logdir runs`. The repository `.gitignore` e
 ## Demo Application
 
 `demo.py` loads a normal run's `best.pt`, accepts an image upload through Gradio, resizes and normalizes the image, and displays the top three predicted CIFAR-10 classes with scores. The CIFAR-10 images are 32×32 pixels, so predictions on unrelated or very different images may be unreliable.
+
